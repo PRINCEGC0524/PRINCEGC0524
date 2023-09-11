@@ -1,0 +1,22 @@
+name: Create GCS Bucket
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-bucket:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.whisper-fine-tuning-dev }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Create bucket
+        run: gsutil mb gs://${{ secrets.prince_git_action }}
